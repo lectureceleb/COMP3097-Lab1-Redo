@@ -11,7 +11,7 @@ struct ContentView: View {
     // Number generation variables
     @State var randomNumber = 0
     @State var roundCount = 1
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     
     // Number checking logic
     @State var isCorrect: Bool = false
@@ -36,7 +36,16 @@ struct ContentView: View {
                 }
                 .onReceive(timer) { _ in
                     if (roundCount >= 10) {
-                        userFeedback = "Game Over!"
+                        // Perform check for missing guess in final round
+                        if answerLog.count < 10 {
+                            logRoundOutcome(round: roundCount, userGuess: "", isCorrect: false)
+                        }
+                        
+                        // Count correct and incorect guesses
+                        let correctAnswerCount = answerLog.filter(\.self.isCorrect).count
+                        let incorrectAnswerCount = answerLog.count - correctAnswerCount
+                        
+                        userFeedback = "Game Over! \n Correct: \(correctAnswerCount) \n Incorrect: \(incorrectAnswerCount)"
                         stopTimer()
                     } else {
                         createRandomNumber()
