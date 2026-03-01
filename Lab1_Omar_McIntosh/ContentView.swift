@@ -12,6 +12,7 @@ struct ContentView: View {
     @State var randomNumber = 0
     @State var roundCount = 1
     let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    @State var activeTimer: Bool = true
     
     // Number checking logic
     @State var isCorrect: Bool = false
@@ -80,14 +81,17 @@ struct ContentView: View {
                 .frame(width: container.size.width, height: container.size.height * leftoverSize)
                 
                 HStack {
-                    if isCorrect {
-                        Image(.correct)
-                            .resizable()
-                            .scaledToFit()
-                    } else {
-                        Image(.incorrect)
-                            .resizable()
-                            .scaledToFit()
+                    // Only show images while timer is going and user has made a guess
+                    if activeTimer && answerLog.count > 0 {
+                        if isCorrect {
+                            Image(.correct)
+                                .resizable()
+                                .scaledToFit()
+                        } else {
+                            Image(.incorrect)
+                                .resizable()
+                                .scaledToFit()
+                        }
                     }
                     
                     Text("\(userFeedback)")
@@ -106,6 +110,7 @@ struct ContentView: View {
     
     func stopTimer() {
         timer.upstream.connect().cancel()
+        activeTimer = false
     }
     
     func isPrime (_ number: Int) -> Bool {
