@@ -58,6 +58,20 @@ struct ContentView: View {
     func stopTimer() {
         timer.upstream.connect().cancel()
     }
+    
+    func isPrime (_ number: Int) -> Bool {
+        if number <= 1 { return false }
+        if number <= 3 { return true }
+        
+        let stopValue = Int(sqrt(Double(number)))
+        
+        for i in 2...stopValue {
+            if number.isMultiple(of: i) {
+                return false
+            }
+        }
+        return true
+    }
 }
 
 #Preview {
