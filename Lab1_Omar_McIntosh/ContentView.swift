@@ -106,6 +106,7 @@ struct ContentView: View {
                     }
                     
                     Text("\(userFeedback)")
+                        .font(.system(size: 30, weight: .bold))
                 }
                 .onReceive(timer) { _ in
                     userFeedback = ""
