@@ -30,7 +30,8 @@ struct ContentView: View {
             VStack {
                 HStack {
                     Text("\(randomNumber)")
-                        .font(.system(size: 40))
+                        .font(.system(size: 50))
+                        .foregroundStyle(Color.green)
                 }
                 .frame(width: container.size.width, height: container.size.height * mainSize)
                 .onAppear {
