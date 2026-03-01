@@ -62,10 +62,8 @@ struct ContentView: View {
                     Button("Prime") {
                         if isPrime(randomNumber) {
                             isCorrect = true
-                            userFeedback = "Correct!"
                         } else {
                             isCorrect = false
-                            userFeedback = "Wrong!"
                         }
                         logRoundOutcome(round: roundCount, userGuess: "Prime", isCorrect: isCorrect)
                     }
@@ -73,10 +71,8 @@ struct ContentView: View {
                     Button("Not Prime") {
                         if !isPrime(randomNumber) {
                             isCorrect = true
-                            userFeedback = "Correct!"
                         } else {
                             isCorrect = false
-                            userFeedback = "Wrong!"
                         }
                         logRoundOutcome(round: roundCount, userGuess: "Not Prime", isCorrect: isCorrect)
                     }
@@ -84,6 +80,16 @@ struct ContentView: View {
                 .frame(width: container.size.width, height: container.size.height * leftoverSize)
                 
                 HStack {
+                    if isCorrect {
+                        Image(.correct)
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        Image(.incorrect)
+                            .resizable()
+                            .scaledToFit()
+                    }
+                    
                     Text("\(userFeedback)")
                 }
                 .onReceive(timer) { _ in
