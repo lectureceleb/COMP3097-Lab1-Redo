@@ -72,6 +72,7 @@ struct ContentView: View {
                         logRoundOutcome(round: roundCount, userGuess: "Prime", isCorrect: isCorrect)
                     }
                     .font(.system(size: 40))
+                    .foregroundStyle(Color.black)
                     .padding()
                     
                     Button("Not Prime") {
@@ -84,6 +85,7 @@ struct ContentView: View {
                         logRoundOutcome(round: roundCount, userGuess: "Not Prime", isCorrect: isCorrect)
                     }
                     .font(.system(size: 40))
+                    .foregroundStyle(Color.black)
                 }
                 .frame(width: container.size.width, height: container.size.height * leftoverSize)
                 
