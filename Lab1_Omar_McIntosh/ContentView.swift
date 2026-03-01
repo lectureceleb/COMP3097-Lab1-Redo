@@ -11,10 +11,11 @@ struct ContentView: View {
     // Number generation variables
     @State var randomNumber = 0
     @State var roundCount = 1
-    let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     // Number checking logic
     @State var isCorrect: Bool = false
+    @State var answerLog: [(round: Int, userGuess: String, isCorrect: Bool)] = []
     @State var userFeedback: String = ""
     
     var body: some View {
@@ -26,7 +27,7 @@ struct ContentView: View {
         GeometryReader { container in
             VStack {
                 HStack {
-                    Text("\(randomNumber) (\(roundCount))")
+                    Text("\(randomNumber)")
                         .font(.system(size: 40))
                 }
                 .frame(width: container.size.width, height: container.size.height * mainSize)
@@ -35,30 +36,40 @@ struct ContentView: View {
                 }
                 .onReceive(timer) { _ in
                     if (roundCount >= 10) {
+                        userFeedback = "Game Over!"
                         stopTimer()
                     } else {
                         createRandomNumber()
                         roundCount += 1
+                        
+                        // Automatically add wrong to answer log if no answer was provided
+                        if roundCount - answerLog.count > 1 {
+                            logRoundOutcome(round: roundCount - 1, userGuess: "", isCorrect: false)
+                        }
                     }
                 }
                 
                 VStack {
                     Button("Prime") {
-                        isCorrect = isPrime(randomNumber)
-                        if isCorrect {
+                        if isPrime(randomNumber) {
+                            isCorrect = true
                             userFeedback = "Correct!"
                         } else {
+                            isCorrect = false
                             userFeedback = "Wrong!"
                         }
+                        logRoundOutcome(round: roundCount, userGuess: "Prime", isCorrect: isCorrect)
                     }
                     
                     Button("Not Prime") {
-                        isCorrect = !isPrime(randomNumber)
-                        if isCorrect {
+                        if !isPrime(randomNumber) {
+                            isCorrect = true
                             userFeedback = "Correct!"
                         } else {
+                            isCorrect = false
                             userFeedback = "Wrong!"
                         }
+                        logRoundOutcome(round: roundCount, userGuess: "Not Prime", isCorrect: isCorrect)
                     }
                 }
                 .frame(width: container.size.width, height: container.size.height * leftoverSize)
@@ -95,6 +106,11 @@ struct ContentView: View {
             }
         }
         return true
+    }
+    
+    func logRoundOutcome(round: Int, userGuess: String, isCorrect: Bool) {
+        let roundData = (round: round, userGuess: userGuess, isCorrect: isCorrect)
+        answerLog.append(roundData)
     }
 }
 
