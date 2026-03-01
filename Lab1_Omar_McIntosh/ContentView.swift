@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State var randomNumber = 0
-    let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    @State var roundCount = 1
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         let mainSize: Double = 0.4
@@ -19,7 +20,7 @@ struct ContentView: View {
         GeometryReader { container in
             VStack {
                 HStack {
-                    Text("\(randomNumber)")
+                    Text("\(randomNumber) (\(roundCount))")
                         .font(.system(size: 40))
                 }
                 .frame(width: container.size.width, height: container.size.height * mainSize)
@@ -27,7 +28,12 @@ struct ContentView: View {
                     createRandomNumber()
                 }
                 .onReceive(timer) { _ in
-                    createRandomNumber()
+                    if (roundCount >= 10) {
+                        stopTimer()
+                    } else {
+                        createRandomNumber()
+                        roundCount += 1
+                    }
                 }
                 
                 VStack {
@@ -47,6 +53,10 @@ struct ContentView: View {
     
     func createRandomNumber() {
         randomNumber = Int.random(in: 1...10)
+    }
+    
+    func stopTimer() {
+        timer.upstream.connect().cancel()
     }
 }
 
