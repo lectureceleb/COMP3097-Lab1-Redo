@@ -67,6 +67,7 @@ struct ContentView: View {
                         } else {
                             isCorrect = false
                         }
+                        showImage = true
                         logRoundOutcome(round: roundCount, userGuess: "Prime", isCorrect: isCorrect)
                     }
                     
@@ -76,22 +77,25 @@ struct ContentView: View {
                         } else {
                             isCorrect = false
                         }
+                        showImage = true
                         logRoundOutcome(round: roundCount, userGuess: "Not Prime", isCorrect: isCorrect)
                     }
                 }
                 .frame(width: container.size.width, height: container.size.height * leftoverSize)
                 
                 HStack {
-                    // Only show images while timer is going and user has made a guess
-                    if activeTimer && answerLog.count > 0 && showImage {
-                        if isCorrect {
-                            Image(.correct)
-                                .resizable()
-                                .scaledToFit()
-                        } else {
-                            Image(.incorrect)
-                                .resizable()
-                                .scaledToFit()
+                    if showImage {
+                        // Only show images after a user's guess while the timer is active
+                        if activeTimer && answerLog.count > 0 {
+                            if isCorrect {
+                                Image(.correct)
+                                    .resizable()
+                                    .scaledToFit()
+                            } else {
+                                Image(.incorrect)
+                                    .resizable()
+                                    .scaledToFit()
+                            }
                         }
                     }
                     
@@ -133,7 +137,6 @@ struct ContentView: View {
     func logRoundOutcome(round: Int, userGuess: String, isCorrect: Bool) {
         let roundData = (round: round, userGuess: userGuess, isCorrect: isCorrect)
         answerLog.append(roundData)
-        showImage = true
     }
 }
 
