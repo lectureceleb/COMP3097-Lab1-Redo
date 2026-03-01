@@ -28,6 +28,8 @@ struct ContentView: View {
         
         GeometryReader { container in
             VStack {
+                
+                // Random number display
                 HStack {
                     Text("\(randomNumber)")
                         .font(.system(size: 50))
@@ -38,7 +40,7 @@ struct ContentView: View {
                     createRandomNumber()
                 }
                 .onReceive(timer) { _ in
-                    if (roundCount >= 10) {
+                    if roundCount >= 10 {
                         // Perform check for missing guess in final round
                         if answerLog.count < 10 {
                             logRoundOutcome(round: roundCount, userGuess: "", isCorrect: false)
@@ -48,6 +50,7 @@ struct ContentView: View {
                         let correctAnswerCount = answerLog.filter(\.self.isCorrect).count
                         let incorrectAnswerCount = answerLog.count - correctAnswerCount
                         
+                        // Display scorecard and stop timer
                         userFeedback = "Game Over! \n Correct: \(correctAnswerCount) \n Incorrect: \(incorrectAnswerCount)"
                         stopTimer()
                     } else {
@@ -61,6 +64,7 @@ struct ContentView: View {
                     }
                 }
                 
+                // User input buttons
                 VStack {
                     Button("Prime") {
                         if isPrime(randomNumber) {
@@ -68,6 +72,8 @@ struct ContentView: View {
                         } else {
                             isCorrect = false
                         }
+                        
+                        // Ensure image is visible for user feedback
                         showImage = true
                         logRoundOutcome(round: roundCount, userGuess: "Prime", isCorrect: isCorrect)
                     }
@@ -81,6 +87,8 @@ struct ContentView: View {
                         } else {
                             isCorrect = false
                         }
+                        
+                        // Ensure image is visible for user feedback
                         showImage = true
                         logRoundOutcome(round: roundCount, userGuess: "Not Prime", isCorrect: isCorrect)
                     }
@@ -109,6 +117,7 @@ struct ContentView: View {
                         .font(.system(size: 30, weight: .bold))
                 }
                 .onReceive(timer) { _ in
+                    // Clear user feedback at the start of a new round
                     userFeedback = ""
                     showImage = false
                 }
