@@ -11,7 +11,11 @@ struct ContentView: View {
     // Number generation variables
     @State var randomNumber = 0
     @State var roundCount = 1
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    
+    // Number checking logic
+    @State var isCorrect: Bool = false
+    @State var userFeedback: String = ""
     
     var body: some View {
         // Sizing variables
@@ -39,14 +43,31 @@ struct ContentView: View {
                 }
                 
                 VStack {
-                    Button("Button 1") {}
+                    Button("Prime") {
+                        isCorrect = isPrime(randomNumber)
+                        if isCorrect {
+                            userFeedback = "Correct!"
+                        } else {
+                            userFeedback = "Wrong!"
+                        }
+                    }
                     
-                    Button("Button 2") {}
+                    Button("Not Prime") {
+                        isCorrect = !isPrime(randomNumber)
+                        if isCorrect {
+                            userFeedback = "Correct!"
+                        } else {
+                            userFeedback = "Wrong!"
+                        }
+                    }
                 }
                 .frame(width: container.size.width, height: container.size.height * leftoverSize)
                 
                 HStack {
-                    Text("Image Here")
+                    Text("\(userFeedback)")
+                }
+                .onReceive(timer) { _ in
+                    userFeedback = ""
                 }
                 .frame(width: container.size.width, height: container.size.height * mainSize)
             }
