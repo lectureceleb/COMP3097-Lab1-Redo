@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    // Number generation variables
     @State var randomNumber = 0
     @State var roundCount = 1
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
+        // Sizing variables
         let mainSize: Double = 0.4
         let leftoverSize: Double = 1 - (mainSize * 2)
         
@@ -60,11 +62,12 @@ struct ContentView: View {
     }
     
     func isPrime (_ number: Int) -> Bool {
+        // Handle instances of 1 (not prime) and 2/3 (prime) automatically
         if number <= 1 { return false }
         if number <= 3 { return true }
         
+        // Check if numbers have more than 2 factors
         let stopValue = Int(sqrt(Double(number)))
-        
         for i in 2...stopValue {
             if number.isMultiple(of: i) {
                 return false
