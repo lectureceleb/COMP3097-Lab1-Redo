@@ -70,6 +70,8 @@ struct ContentView: View {
                         showImage = true
                         logRoundOutcome(round: roundCount, userGuess: "Prime", isCorrect: isCorrect)
                     }
+                    .font(.system(size: 40))
+                    .padding()
                     
                     Button("Not Prime") {
                         if !isPrime(randomNumber) {
@@ -80,6 +82,7 @@ struct ContentView: View {
                         showImage = true
                         logRoundOutcome(round: roundCount, userGuess: "Not Prime", isCorrect: isCorrect)
                     }
+                    .font(.system(size: 40))
                 }
                 .frame(width: container.size.width, height: container.size.height * leftoverSize)
                 
