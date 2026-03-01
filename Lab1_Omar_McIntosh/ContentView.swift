@@ -17,6 +17,7 @@ struct ContentView: View {
     // Number checking logic
     @State var isCorrect: Bool = false
     @State var answerLog: [(round: Int, userGuess: String, isCorrect: Bool)] = []
+    @State var showImage: Bool = false
     @State var userFeedback: String = ""
     
     var body: some View {
@@ -82,7 +83,7 @@ struct ContentView: View {
                 
                 HStack {
                     // Only show images while timer is going and user has made a guess
-                    if activeTimer && answerLog.count > 0 {
+                    if activeTimer && answerLog.count > 0 && showImage {
                         if isCorrect {
                             Image(.correct)
                                 .resizable()
@@ -98,6 +99,7 @@ struct ContentView: View {
                 }
                 .onReceive(timer) { _ in
                     userFeedback = ""
+                    showImage = false
                 }
                 .frame(width: container.size.width, height: container.size.height * mainSize)
             }
@@ -131,6 +133,7 @@ struct ContentView: View {
     func logRoundOutcome(round: Int, userGuess: String, isCorrect: Bool) {
         let roundData = (round: round, userGuess: userGuess, isCorrect: isCorrect)
         answerLog.append(roundData)
+        showImage = true
     }
 }
 
